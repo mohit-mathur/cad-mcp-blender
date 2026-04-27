@@ -1,0 +1,21 @@
+schema_version = "1.0.0"
+
+id = "cad_mcp_blender"
+version = "1.0.0"
+name = "CAD-MCP"
+tagline = "Connect Blender to Claude AI via the Model Context Protocol"
+maintainer = "CAD-MCP Project"
+type = "add-on"
+
+website = "https://github.com/mohit-mathur/cad-mcp-blender"
+
+tags = ["3D View", "Interface", "Render"]
+
+blender_version_min = "4.2.0"
+
+license = ["SPDX:MIT"]
+
+# Permissions disclosed to the user at install time.
+[permissions]
+network = "Connects to a local MCP server (default port 9876) and downloads CC0 assets from polyhaven.com"
+files = "Saves checkpoints, viewport screenshots, renders, and downloaded assets to the OS temp directory"

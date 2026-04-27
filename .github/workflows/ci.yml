@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install server deps
+        working-directory: server
+        run: npm ci
+
+      - name: Syntax check server
+        working-directory: server
+        run: npm run check
+
+      - name: Syntax check addon
+        run: |
+          python -c "import ast; ast.parse(open('addon/__init__.py', encoding='utf-8').read()); print('addon/__init__.py OK')"
+
+      - name: Validate manifest
+        run: |
+          python -c "import tomllib; tomllib.load(open('addon/blender_manifest.toml','rb')); print('manifest OK')"
+
+      - name: Build addon zip (dry-run)
+        run: python scripts/build_addon.py --out /tmp/dist
